@@ -3,13 +3,15 @@ server:
 
 spring:
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update   # ⬅️ first deploy safe
     show-sql: false
 
 jwt:
