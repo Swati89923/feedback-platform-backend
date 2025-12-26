@@ -34,22 +34,24 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
 
-                // 🔓 PUBLIC
+                // 🔓 PUBLIC ENDPOINTS
                 .requestMatchers(
-                        "/api/v1/auth/**",
-                        "/v3/api-docs/**",
-                        "/swagger-ui/**",
-                        "/swagger-ui.html"
+                    "/",                        // 👈 add
+                    "/actuator/**",             // 👈 add
+                    "/api/v1/auth/**",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html"
                 ).permitAll()
 
-                // 🔒 ROLE BASED (IMPORTANT FIX)
+                // 🔒 ROLE BASED
                 .requestMatchers("/api/v1/projects/**")
-                    .hasAuthority("DEVELOPER")
+                .hasAuthority("DEVELOPER")
 
                 .requestMatchers("/api/v1/admin/**")
-                    .hasAuthority("ADMIN")
+                .hasAuthority("ADMIN")
 
-                // 🔒 ANY AUTHENTICATED
+                // 🔐 ALL OTHERS NEED AUTH
                 .anyRequest().authenticated()
             )
 
