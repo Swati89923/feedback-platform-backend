@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtFilter;
@@ -26,62 +26,43 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                // ❌ CSRF disable (JWT based auth)
-                .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable())
 
-                // ❌ Session disable (STATELESS)
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
 
-                // ✅ AUTHORIZATION RULES
-                .authorizeHttpRequests(auth -> auth
+            .authorizeHttpRequests(auth -> auth
 
-                        // 🔓 PUBLIC APIs
-                        .requestMatchers(
-                                "/api/v1/auth/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html"
-                        ).permitAll()
+                // 🔓 PUBLIC
+                .requestMatchers(
+                        "/api/v1/auth/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+                ).permitAll()
 
-                        // 🔒 ADMIN ONLY
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                // 🔒 ROLE BASED (IMPORTANT FIX)
+                .requestMatchers("/api/v1/projects/**")
+                    .hasAuthority("DEVELOPER")
 
-                        // 🔒 AUTHENTICATED USERS
-                        .requestMatchers(
-                                "/api/v1/projects/**",
-                                "/api/v1/feedback/**",
-                                "/api/v1/dashboard/**",
-                                "/api/v1/wallet/**",
-                                "/api/v1/payment/**"
-                        ).authenticated()
+                .requestMatchers("/api/v1/admin/**")
+                    .hasAuthority("ADMIN")
 
-                        // ❗ fallback
-                        .anyRequest().authenticated()
-                )
+                // 🔒 ANY AUTHENTICATED
+                .anyRequest().authenticated()
+            )
 
-                // 🔐 SECURITY HEADERS (PHASE 16)
-                .headers(headers -> headers
-                        .contentSecurityPolicy(csp ->
-                                csp.policyDirectives("default-src 'self'")
-                        )
-                        .frameOptions(frame -> frame.sameOrigin())
-                )
-
-                // 🔐 JWT FILTER
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // 🔑 PASSWORD ENCODER
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 🔐 AUTH MANAGER
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config
