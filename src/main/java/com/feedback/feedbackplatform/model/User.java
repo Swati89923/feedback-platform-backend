@@ -2,6 +2,7 @@ package com.feedback.feedbackplatform.model;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -12,26 +13,28 @@ public class User {
 
     private String name;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
+
     @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
     private int reviewerScore = 0;
 
-    public int getReviewerScore() {
-        return reviewerScore;
-    }
+    // 🔥 NEW FIELD (for profile avatar)
+    private String avatarUrl;
 
-    public void setReviewerScore(int reviewerScore) {
-        this.reviewerScore = reviewerScore;
-    }
+    // ---------------- GETTERS & SETTERS ----------------
 
-    // getters & setters
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -40,10 +43,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEmail() {
@@ -68,5 +67,22 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public int getReviewerScore() {
+        return reviewerScore;
+    }
+
+    public void setReviewerScore(int reviewerScore) {
+        this.reviewerScore = reviewerScore;
+    }
+
+    // 🔥 AVATAR GETTER / SETTER
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }
