@@ -11,7 +11,11 @@ public class UserProfileResponse {
     private Role role;
     private LocalDateTime createdAt;
 
-    public UserProfileResponse(Long id, String name, String email, Role role, LocalDateTime createdAt) {
+    public UserProfileResponse(Long id,
+                               String name,
+                               String email,
+                               Role role,
+                               LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -19,9 +23,23 @@ public class UserProfileResponse {
         this.createdAt = createdAt;
     }
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getEmail() { return email; }
-    public Role getRole() { return role; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }
