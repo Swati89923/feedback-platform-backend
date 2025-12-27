@@ -1,27 +1,58 @@
-package com.feedback.feedbackplatform.dto;
+package com.feedback.feedbackplatform.service;
 
+import com.feedback.feedbackplatform.exception.InvalidCredentialsException;
 import com.feedback.feedbackplatform.model.Role;
-import java.time.LocalDateTime;
+import com.feedback.feedbackplatform.model.User;
+import com.feedback.feedbackplatform.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-public class UserProfileResponse {
+@Service
+public class UserService {
 
-    private Long id;
-    private String name;
-    private String email;
-    private Role role;
-    private LocalDateTime createdAt;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserProfileResponse(Long id, String name, String email, Role role, LocalDateTime createdAt) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.role = role;
-        this.createdAt = createdAt;
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getEmail() { return email; }
-    public Role getRole() { return role; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    // REGISTER
+    public User registerUser(String name, String email, String password, Role role) {
+
+        userRepository.findByEmail(email).ifPresent(u -> {
+            throw new RuntimeException("Email already registered");
+        });
+
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole(role);
+
+        return userRepository.save(user);
+    }
+
+    // LOGIN
+    public User login(String email, String password) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new InvalidCredentialsException("Invalid email or password"));
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new InvalidCredentialsException("Invalid email or password");
+        }
+
+        return user;
+    }
+
+    // PROFILE
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found with email: " + email));
+    }
 }
