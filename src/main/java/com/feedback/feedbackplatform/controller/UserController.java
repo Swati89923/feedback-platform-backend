@@ -30,7 +30,7 @@ public class UserController {
                 user.getName(),
                 user.getEmail(),
                 user.getRole(),
-                null   // createdAt temporarily null
+                null   // createdAt not present in User entity yet
         );
 
         return ResponseEntity.ok(response);
