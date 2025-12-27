@@ -20,7 +20,7 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<UserProfileResponse> getMyProfile(Authentication authentication) {
         String email = authentication.getName(); // JWT se
-        User user = userService.findByEmail(email);
+        User user = userService.getByEmail(email);
         return ResponseEntity.ok(new UserProfileResponse(user));
     }
 }
