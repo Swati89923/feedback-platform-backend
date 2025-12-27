@@ -6,6 +6,10 @@ import com.feedback.feedbackplatform.model.User;
 import com.feedback.feedbackplatform.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -19,7 +23,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // REGISTER
+    // ✅ REGISTER
     public User registerUser(String name, String email, String password, Role role) {
 
         userRepository.findByEmail(email).ifPresent(u -> {
@@ -35,7 +39,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // LOGIN
+    // ✅ LOGIN
     public User login(String email, String password) {
 
         User user = userRepository.findByEmail(email)
@@ -49,10 +53,41 @@ public class UserService {
         return user;
     }
 
-    // PROFILE
+    // ✅ GET USER BY EMAIL (JWT SUPPORT)
     public User getByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new RuntimeException("User not found with email: " + email));
+    }
+
+    // 🔥 UPDATE PROFILE (NAME + AVATAR)
+    public User updateProfile(User user, String name, MultipartFile avatar) {
+
+        // update name
+        if (name != null && !name.trim().isEmpty()) {
+            user.setName(name);
+        }
+
+        // update avatar
+        if (avatar != null && !avatar.isEmpty()) {
+            try {
+                String uploadDir = "uploads/";
+                File dir = new File(uploadDir);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                String filename = UUID.randomUUID() + "_" + avatar.getOriginalFilename();
+                File destination = new File(uploadDir + filename);
+                avatar.transferTo(destination);
+
+                user.setAvatarUrl("/uploads/" + filename);
+
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to upload avatar");
+            }
+        }
+
+        return userRepository.save(user);
     }
 }
