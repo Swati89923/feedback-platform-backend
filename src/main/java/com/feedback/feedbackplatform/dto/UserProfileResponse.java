@@ -10,17 +10,19 @@ public class UserProfileResponse {
     private String email;
     private Role role;
     private LocalDateTime createdAt;
-
+    private String avatarUrl;
     public UserProfileResponse(Long id,
                                String name,
                                String email,
                                Role role,
-                               LocalDateTime createdAt) {
+                               LocalDateTime createdAt,
+                               String avatarUrl) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;
         this.createdAt = createdAt;
+        this.avatarUrl = avatarUrl;
     }
 
     public Long getId() {
@@ -41,5 +43,8 @@ public class UserProfileResponse {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 }
