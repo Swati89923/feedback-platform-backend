@@ -1,9 +1,8 @@
-package com.swati.feedbackplatform.controller;
+package com.feedback.feedbackplatform.controller;
 
-import com.swati.feedbackplatform.dto.UserProfileResponse;
-import com.swati.feedbackplatform.entity.User;
-import com.swati.feedbackplatform.service.UserService;
-import lombok.RequiredArgsConstructor;
+import com.feedback.feedbackplatform.dto.UserProfileResponse;
+import com.feedback.feedbackplatform.model.User;
+import com.feedback.feedbackplatform.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
-@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("/me")
     public ResponseEntity<UserProfileResponse> getMyProfile(Authentication authentication) {
 
-        String email = authentication.getName(); // JWT se
+        String email = authentication.getName();
         User user = userService.getByEmail(email);
 
         UserProfileResponse response = new UserProfileResponse(
