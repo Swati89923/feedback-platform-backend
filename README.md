@@ -1,4 +1,4 @@
-# LinkedIn Batch Data Analysis
+
 
 ## Project Overview
 This project presents an analytical study of a LinkedIn student network dataset representing the student batch of 2024–28. The analysis focuses on understanding the network’s connectivity, structure, and key statistics derived from cleaned LinkedIn CSV data. The goal is to extract meaningful insights about how students are interconnected digitally, identify influential individuals, and provide a foundation for collaboration and professional growth tracking.
