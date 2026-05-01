@@ -1,36 +1,147 @@
+# 📢 Feedback Platform Backend
 
+A **Spring Boot-based backend application** for managing user feedback.
+This project provides REST APIs for user management, feedback handling, authentication, and profile management.
 
-## Project Overview
-This project presents an analytical study of a LinkedIn student network dataset representing the student batch of 2024–28. The analysis focuses on understanding the network’s connectivity, structure, and key statistics derived from cleaned LinkedIn CSV data. The goal is to extract meaningful insights about how students are interconnected digitally, identify influential individuals, and provide a foundation for collaboration and professional growth tracking.
+---
 
-## Features
-- Data cleaning: standardizing name fields, removing duplicates, and converting Excel files to CSV.
-- Graph construction: building a student network graph using adjacency lists.
-- Degree analysis: computing node degrees to identify key individuals with highest connectivity.
-- Random walk analysis: evaluating graph traversal metrics to understand connectivity patterns.
-- Statistical insights: calculating number of nodes, edges, average degree, and graph density.
-- Visualization: generating graphs and plots to analyze network structure and behavior.
+## 🚀 Features
 
-## Methodology
-1. Cleaned and preprocessed raw data using Python and Pandas.
-2. Constructed the network graph using NetworkX.
-3. Performed degree and random walk analysis on the graph.
-4. Visualized results with Matplotlib.
+* 👤 User Registration & Authentication
+* 🔐 Secure APIs with Spring Security
+* 📝 Feedback submission & management
+* 📦 Layered architecture (Controller → Service → Repository)
+* 📄 DTO-based request/response handling
+* ⚠️ Centralized exception handling
+* 🖼️ User profile update with avatar support
 
-## Technologies Used
-Python, Pandas, NetworkX, Matplotlib, Jupyter Notebook, CSV Data Processing
+---
 
-## How to Use
-1. Clone the repository.
-2. Install required libraries: `pip install pandas networkx matplotlib`
-3. Open and run the Jupyter Notebook to follow the data cleaning, analysis, and visualization steps.
-4. Refer to the included `Report_Analysis.pdf` for detailed insights.
+## 🛠️ Tech Stack
 
-## Future Improvements
-- Add a web interface for interactive visualization.
-- Incorporate machine learning for community detection and recommendations.
-- Automate data ingestion and cleaning for real-time updates.
+* **Java**
+* **Spring Boot**
+* **Spring Security**
+* **Spring Data JPA**
+* **Maven**
+* **MySQL / H2 (configurable)**
 
-## Author
-Swati Kumari — Sitare University
+---
 
+## 📁 Project Structure
+
+```
+src/main/java/com/feedback/feedbackplatform
+│
+├── config        # Configuration classes (WebConfig, etc.)
+├── controller    # REST Controllers
+├── dto           # Data Transfer Objects
+├── exception     # Custom exception handling
+├── model         # Entity classes
+├── repository    # JPA repositories
+├── security      # Security configurations
+├── service       # Business logic layer
+└── FeedbackplatformApplication.java
+```
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/your-username/feedback-platform-backend.git
+cd feedback-platform-backend
+```
+
+### 2️⃣ Configure Database
+
+Update `application.properties`:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/feedback_db
+spring.datasource.username=root
+spring.datasource.password=your_password
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+---
+
+### 3️⃣ Build & Run
+
+```bash
+mvn clean install
+mvn spring-boot:run
+```
+
+Server will start at:
+
+```
+http://localhost:8080
+```
+
+---
+
+## 🔐 API Endpoints (Sample)
+
+### 👤 User
+
+* `POST /api/users/register` → Register user
+* `POST /api/users/login` → Login user
+* `GET /api/users/profile` → Get user profile
+* `PUT /api/users/profile` → Update profile
+
+### 📝 Feedback
+
+* `POST /api/feedback` → Submit feedback
+* `GET /api/feedback` → Get all feedback
+* `DELETE /api/feedback/{id}` → Delete feedback
+
+---
+
+## 🔒 Security
+
+* Uses **Spring Security**
+* Authentication & authorization configured in `security/`
+* Passwords encrypted using secure hashing
+
+---
+
+## ⚠️ Exception Handling
+
+* Centralized error handling using custom exceptions
+* Clean and consistent API error responses
+
+---
+
+## 📌 Future Improvements
+
+* JWT-based authentication
+* Role-based access control
+* API documentation (Swagger)
+* Docker support
+* Pagination & filtering for feedback
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+Feel free to fork the repo and submit a pull request.
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## 💡 Author
+
+Developed by **Swati** ✨
+
+---
