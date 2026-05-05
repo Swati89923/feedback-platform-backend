@@ -51,7 +51,7 @@ src/main/java/com/feedback/feedbackplatform
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/feedback-platform-backend.git
+git clone https://github.com/Swati89923/feedback-platform-backend.git
 cd feedback-platform-backend
 ```
 
