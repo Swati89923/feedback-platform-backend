@@ -77,7 +77,7 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-Server will start at:
+Server will be start at:
 
 ```
 http://localhost:8080
